@@ -403,13 +403,15 @@ class AST
             }
 
             $coercedObj = [];
-            $fields     = $type->getFields();
             $fieldNodes = Utils::keyMap(
                 $valueNode->fields,
                 static function ($field) {
                     return $field->name->value;
                 }
             );
+
+	    $fields = array_merge(array_flip(array_map(function($item) { return $item->name->value; }, $fieldNodes)), $type->getFields());
+
             foreach ($fields as $field) {
                 /** @var ValueNode $fieldNode */
                 $fieldName = $field->name;
